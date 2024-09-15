@@ -2,13 +2,13 @@ import fs from 'node:fs/promises'
 import express from 'express'
 import { Transform } from 'node:stream'
 import 'dotenv/config'
+import { searchEndpoint, trendingEndpoint } from './giphy-endpoints.js'
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 const ABORT_DELAY = 10000
-const apiKey = process.env.API_KEY
 
 // Cached production assets
 const templateHtml = isProduction
@@ -39,57 +39,10 @@ if (!isProduction) {
 }
 
 // pass through request to avoid leaking API key
-app.get('/api/search', async (req, res) => {
-
-  const search = req.query?.q ?? ""
-  const offset = req.query?.offset ?? 0
-  const limit = req.query?.limit ?? 25
-
-  const uri = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${search}&limit=${limit}&offset=${offset}`
-
-  try {
-    const response = await fetch(uri)
-    if (!response.ok) {
-      throw new Error(`Failed to request giphy API /trending`)
-    }
-
-    const responseData = await response.json()
-
-    res.status(200).json(responseData)
-  } catch (error) {
-    console.error(error)
-
-    res.status(500).json({
-      "error": "Failed to request giphy API"
-    })
-  }
-})
+app.get('/api/search', searchEndpoint)
 
 // pass through request to avoid leaking API key
-app.get('/api/trending', async (req, res) => {
-
-  const offset = req.query?.offset ?? 0
-  const limit = req.query?.limit ?? 25
-
-  const uri = `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=${limit}&offset=${offset}`
-
-  try {
-    const response = await fetch(uri)
-    if (!response.ok) {
-      throw new Error(`Failed to request giphy API /trending`)
-    }
-
-    const responseData = await response.json()
-
-    res.status(200).json(responseData)
-  } catch (error) {
-    console.error(error)
-
-    res.status(500).json({
-      "error": "Failed to request giphy API"
-    })
-  }
-})
+app.get('/api/trending', trendingEndpoint)
 
 // Serve HTML
 app.use('*', async (req, res) => {
