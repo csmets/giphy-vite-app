@@ -10,8 +10,9 @@ export const GifContainer = () => {
   // handle infinite scroll
   useEffect(() => {
     const onscroll = () => {
-      const scrolledTo = window.scrollY + window.innerHeight
-      const isReachBottom = document.body.scrollHeight === scrolledTo
+      const scrollOffset = 10
+      const scrolledTo = (window.scrollY + window.innerHeight) + scrollOffset
+      const isReachBottom = document.body.scrollHeight <= scrolledTo
       if (isReachBottom) {
         appData && setAppData({
           ...appData,
