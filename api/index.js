@@ -1,3 +1,7 @@
+/*
+* This is used for Vercel Serverless functions
+*/
+
 import express from 'express'
 import 'dotenv/config'
 import { searchEndpoint, trendingEndpoint } from './giphy-endpoints.js'
