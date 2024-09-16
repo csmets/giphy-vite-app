@@ -1,6 +1,6 @@
 import express from 'express'
 import 'dotenv/config'
-import { searchEndpoint, trendingEndpoint } from '../giphy-endpoints.js'
+import { searchEndpoint, trendingEndpoint } from './giphy-endpoints.js'
 
 const app = express();
 app.use(express.json());

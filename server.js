@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import express from 'express'
 import { Transform } from 'node:stream'
 import 'dotenv/config'
-import { searchEndpoint, trendingEndpoint } from './giphy-endpoints.js'
+import { searchEndpoint, trendingEndpoint } from './api/giphy-endpoints.js'
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
